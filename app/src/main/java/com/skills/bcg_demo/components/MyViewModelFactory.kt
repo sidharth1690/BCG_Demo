@@ -7,7 +7,7 @@ import com.skills.bcg_demo.ui.home_components.HomeViewModel
 import com.skills.bcg_demo.ui.login_components.LoginViewModel
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory() : ViewModelProvider.Factory {
+class ViewModelFactory(private val activity: AppCompatActivity) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> HomeViewModel() as T

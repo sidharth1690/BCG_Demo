@@ -184,9 +184,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             activityMainBinding.btnUpdateSteps.isEnabled=false
             activityMainBinding.barChart.visibility=View.GONE
         } else {
-            activityMainBinding.tvStepCountForTheDay.text =
-                getString(R.string.step_for_the_day_prefix).plus(stepsList[stepsList.size - 1].toString())
-            homeViewModel.updateStepCount(stepsList[stepsList.size - 1])
+            activityMainBinding.tvStepCountForTheDay.text = getString(R.string.step_for_the_day_prefix).plus(stepsList[stepsList.size - 1].toString())
+
+            // server call to update the steps data to  own server
+//            homeViewModel.updateStepCount(stepsList[stepsList.size - 1])
+
             activityMainBinding.btnUpdateSteps.isEnabled=true
             activityMainBinding.barChart.visibility=View.VISIBLE
         }
