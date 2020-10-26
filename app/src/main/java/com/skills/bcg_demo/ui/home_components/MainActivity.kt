@@ -1,3 +1,20 @@
+/*
+*********************************************************
+* ******************************************************
+ * Copyright 2020 MobileProgrammingLLC
+ *  All Rights Reserved*
+ *
+ * No portion of this material may be reproduced in any form without the written permission of MobileProgrammingLLC.
+ * All information contained in this document is MobileProgrammingLLC*'s  private property and trade secret.
+ *
+ * $Id-
+ * Filename:MainActivity.kt
+ * Author:
+ * Creation Date: 20/10/2020 10:00 AM
+ *
+ * ****************************************************
+ * ******************************************************
+ */
 package com.skills.bcg_demo.ui.home_components
 
 import android.app.Activity
@@ -19,7 +36,6 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
-import com.google.android.gms.fitness.FitnessActivities
 import com.google.android.gms.fitness.data.*
 import com.google.android.gms.fitness.request.DataReadRequest
 import com.google.android.gms.fitness.request.DataUpdateRequest
@@ -31,10 +47,10 @@ import com.skills.bcg_demo.databinding.ActivityMainBinding
 import com.skills.bcg_demo.models.ApiModels
 import com.skills.bcg_demo.utils.AppUtils
 import com.skills.bcg_demo.utils.Constants
+import com.skills.bcg_demo.utils.Constants.Companion.days
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -43,36 +59,16 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var activityMainBinding: ActivityMainBinding
-    private var stepsList: ArrayList<Long> = ArrayList()
-    private var googleFitObj = ApiModels.GoogleFitResponse()
-    private val days =
-        arrayOf(
-            "Day14",
-            "Day13",
-            "Day12",
-            "Day11",
-            "Day10",
-            "Day9",
-            "Day8",
-            "Day7",
-            "Day6",
-            "Day5",
-            "Day4",
-            "Day3",
-            "Day2",
-            "Day1"
-        )
-    private fun getGoogleAccount() =
-        GoogleSignIn.getAccountForExtension(this, Constants.googleFitOptions)
-
-    private var seekBarValue: Int = 0
-
+    private lateinit var mHomeViewModel: HomeViewModel
+    private lateinit var mActivityMainBinding: ActivityMainBinding
+    private var mStepsList: ArrayList<Long> = ArrayList()
+    private var mGoogleFitObj = ApiModels.GoogleFitResponse()
+    private fun getGoogleAccount() = GoogleSignIn.getAccountForExtension(this, Constants.googleFitOptions)
+    private var mSeekBarValue: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        homeViewModel =
+        mHomeViewModel =
             ViewModelProvider(this, ViewModelFactory(this)).get(HomeViewModel::class.java)
         setDataBinding()
         setUpObserver()
@@ -86,10 +82,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * set observer for live data instances
      */
     private fun setUpObserver() {
-        homeViewModel.getUserStepUpdateResponse()?.observe(this, androidx.lifecycle.Observer {
+        mHomeViewModel.getUserStepUpdateResponse()?.observe(this, androidx.lifecycle.Observer {
         })
 
-        homeViewModel.onApiFail()?.observe(this, androidx.lifecycle.Observer {
+        mHomeViewModel.onApiFail()?.observe(this, androidx.lifecycle.Observer {
 
         })
 
@@ -99,11 +95,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * set up data binding
      */
     private fun setDataBinding() {
-        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        activityMainBinding.lifecycleOwner = this
-        activityMainBinding.homeViewModel = homeViewModel
-        activityMainBinding.tvSeekBarProgress.text = seekbar.progress.toString().plus("/").plus(seekbar.max)
-        activityMainBinding.btnUpdateSteps.setOnClickListener(this)
+        mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mActivityMainBinding.lifecycleOwner = this
+        mActivityMainBinding.homeViewModel = mHomeViewModel
+        mActivityMainBinding.tvSeekBarProgress.text = seekbar.progress.toString().plus("/").plus(seekbar.max)
+        mActivityMainBinding.btnUpdateSteps.setOnClickListener(this)
         seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
 
             override fun onProgressChanged(
@@ -111,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 progress: Int,
                 fromUser: Boolean
             ) {
-                seekBarValue = progress
+                mSeekBarValue = progress
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -119,7 +115,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 tv_seek_bar_progress.text =
-                    seekBarValue.toString().plus( getString(R.string.separator)).plus(seekBar.max)
+                    mSeekBarValue.toString().plus( getString(R.string.separator)).plus(seekBar.max)
             }
         })
     }
@@ -157,15 +153,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * extract required data from the fit response data set
+     * data set: returned data data packets from google fit.
      */
     private fun extractRespectiveDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
             dp.dataType.fields.forEach breakLoop@{
                 when (it.name) {
                     Field.FIELD_STEPS.name -> {
-                        googleFitObj.userStepCount = dp.getValue(Field.FIELD_STEPS).asInt().toLong()
-                        Log.e("History", "Number of Steps: " + googleFitObj.userStepCount)
-                        stepsList.add(googleFitObj.userStepCount!!)
+                        mGoogleFitObj.userStepCount = dp.getValue(Field.FIELD_STEPS).asInt().toLong()
+                        Log.e("History", "Number of Steps: " + mGoogleFitObj.userStepCount)
+                        mStepsList.add(mGoogleFitObj.userStepCount!!)
                     }
 
                 }
@@ -179,18 +176,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      * update the view based on the data fetched from fit server
      */
     private fun updateTheUiForStepData(){
-        if (stepsList.size == 0) {
-            activityMainBinding.tvStepCountForTheDay.text = getString(R.string.no_records)
-            activityMainBinding.btnUpdateSteps.isEnabled=false
-            activityMainBinding.barChart.visibility=View.GONE
+        if (mStepsList.size == 0) {
+            mActivityMainBinding.tvStepCountForTheDay.text = getString(R.string.no_records)
+            mActivityMainBinding.btnUpdateSteps.isEnabled=false
+            mActivityMainBinding.barChart.visibility=View.GONE
         } else {
-            activityMainBinding.tvStepCountForTheDay.text = getString(R.string.step_for_the_day_prefix).plus(stepsList[stepsList.size - 1].toString())
+            mActivityMainBinding.tvStepCountForTheDay.text = getString(R.string.step_for_the_day_prefix).plus(mStepsList[mStepsList.size - 1].toString())
 
             // server call to update the steps data to  own server
 //            homeViewModel.updateStepCount(stepsList[stepsList.size - 1])
 
-            activityMainBinding.btnUpdateSteps.isEnabled=true
-            activityMainBinding.barChart.visibility=View.VISIBLE
+            mActivityMainBinding.btnUpdateSteps.isEnabled=true
+            mActivityMainBinding.barChart.visibility=View.VISIBLE
         }
     }
 
@@ -224,8 +221,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 } else if (response.dataSets?.isNotEmpty()!!) response.dataSets.forEach {
                     extractRespectiveDataSet(it)
                 }
-                if(stepsList.size>0) {
-                    prepareBarChartAndSetView(stepsList)
+                if(mStepsList.size>0) {
+                    prepareBarChartAndSetView(mStepsList)
                 }
             }
             .addOnFailureListener { e: Exception? ->
@@ -270,11 +267,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_update_steps -> {
-                if(seekBarValue<1){
+                if(mSeekBarValue<1){
                     Toast.makeText(this,"Please add some steps to update",Toast.LENGTH_LONG).show()
                     return
                 }
-                val alert = AppUtils.alertBuilder("Are you sure you want to update $seekBarValue steps to Google Fit for today?", this)
+                val alert = AppUtils.alertBuilder("Are you sure you want to update $mSeekBarValue steps to Google Fit for today?", this)
                 alert.setPositiveButton("Yes") { _, _ ->
                     if(GoogleSignIn.hasPermissions(
                         getGoogleAccount(),
@@ -357,6 +354,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     /**
      * Creates and returns a data set of step count data for updating step for today.
+     * returns a data set to be inserted into google fit records.
      */
     private fun insertFitnessData(): DataSet {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
@@ -377,7 +375,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Create a data set
         return DataSet.builder(dataSource)
             .add(DataPoint.builder(dataSource)
-                .setField(Field.FIELD_STEPS, seekBarValue)
+                .setField(Field.FIELD_STEPS, mSeekBarValue)
                 .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS)
                 .build()
             ).build()

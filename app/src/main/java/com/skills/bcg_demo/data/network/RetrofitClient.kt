@@ -1,3 +1,20 @@
+/*
+*********************************************************
+* ******************************************************
+ * Copyright 2020 MobileProgrammingLLC
+ *  All Rights Reserved*
+ *
+ * No portion of this material may be reproduced in any form without the written permission of MobileProgrammingLLC.
+ * All information contained in this document is MobileProgrammingLLC*'s  private property and trade secret.
+ *
+ * $Id-
+ * Filename:RetrofitClient.kt
+ * Author:
+ * Creation Date: 20/10/2020 09:30 AM
+ *
+ * ****************************************************
+ * ******************************************************
+ */
 package com.skills.bcg_demo.data.network
 
 import com.skills.bcg_demo.utils.Constants
@@ -10,7 +27,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private var requestInterface: RequestInterface? = null
+    private var mRequestInterface: RequestInterface? = null
     private const val API_HEADER_CONTENT_TYPE = "Content-Type"
     private const val AUTHORIZATION = "Authorization"
     fun getClient(): RequestInterface? {
@@ -31,13 +48,13 @@ object RetrofitClient {
         }.readTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)
             .build()
-        requestInterface = Retrofit.Builder()
+        mRequestInterface = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build().create(RequestInterface::class.java)
-        return requestInterface
+        return mRequestInterface
     }
 }
 

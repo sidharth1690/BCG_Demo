@@ -1,13 +1,27 @@
-package com.skills.bcg_demo.ui.login_components
+/*
+*********************************************************
+* ******************************************************
+ * Copyright 2020 MobileProgrammingLLC
+ *  All Rights Reserved*
+ *
+ * No portion of this material may be reproduced in any form without the written permission of MobileProgrammingLLC.
+ * All information contained in this document is MobileProgrammingLLC*'s  private property and trade secret.
+ *
+ * $Id-
+ * Filename:LoginViewModel.kt
+ * Author:
+ * Creation Date: 20/10/2020 09:30 AM
+ *
+ * ****************************************************
+ * ******************************************************
+ */package com.skills.bcg_demo.ui.login_components
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.skills.bcg_demo.R
 import com.skills.bcg_demo.base_componets.BaseViewModel
-import com.skills.bcg_demo.data.network.ApiDataSource
-import com.skills.bcg_demo.data.network.RequestInterface
-import com.skills.bcg_demo.data.network.RetrofitClient
+import com.example.network_client_module.network.ApiDataSource
+import com.example.network_client_module.network.RequestInterface
+import com.example.network_client_module.network.RetrofitClient
 import com.skills.bcg_demo.models.ApiModels
 import com.skills.bcg_demo.utils.Constants
 import com.skills.bcg_demo.utils.Result
@@ -16,30 +30,30 @@ import retrofit2.Response
 
 class LoginViewModel : BaseViewModel() {
 
-    private val apiService: RequestInterface? = RetrofitClient.getClient()
-    private val repository: ApiDataSource? = apiService?.let { ApiDataSource(it) }
-    var userLoginResult: MutableLiveData<ApiModels.UserLoginResponse> = MutableLiveData()
-    private var getUser: MutableLiveData<ApiModels.LoginModel>? = null
-    private var onApiResponseFail = MutableLiveData<Response<*>>()
+    private val mApiService: RequestInterface? = RetrofitClient.getClient()
+    private val mRepository: ApiDataSource? = mApiService?.let { ApiDataSource(it) }
+    var mUserLoginResult: MutableLiveData<ApiModels.UserLoginResponse> = MutableLiveData()
+    private var mGetUser: MutableLiveData<ApiModels.LoginModel>? = null
+    private var mOnApiResponseFail = MutableLiveData<Response<*>>()
 
     var userName: MutableLiveData<String> = MutableLiveData()
     var password: MutableLiveData<String> = MutableLiveData()
 
 
     fun getLoginResponseData(): LiveData<ApiModels.UserLoginResponse?>? {
-        return userLoginResult
+        return mUserLoginResult
     }
 
     fun onApiFail(): LiveData<Response<*>?>? {
-        return onApiResponseFail
+        return mOnApiResponseFail
     }
 
 
     fun getUser(): LiveData<ApiModels.LoginModel?>? {
-        if (getUser == null) {
-            getUser = MutableLiveData()
+        if (mGetUser == null) {
+            mGetUser = MutableLiveData()
         }
-        return getUser
+        return mGetUser
     }
 
     private val errorMessage: MutableLiveData<String> = MutableLiveData()
@@ -49,9 +63,9 @@ class LoginViewModel : BaseViewModel() {
      * request user login after validating user input
      */
     fun requestUserLogin(userName: String, password: String) {
-        scope.launch {
+        mScope.launch {
             getResponseModel(
-                repository?.userLogin(
+                mRepository?.userLogin(
                     ApiModels.UserLoginRequest(
                         userName,
                         password
@@ -88,7 +102,7 @@ class LoginViewModel : BaseViewModel() {
     }
 
     private fun postUserLoginResponseData(type: ApiModels.UserLoginResponse) {
-        userLoginResult.postValue(type)
+        mUserLoginResult.postValue(type)
     }
 
 //    /**

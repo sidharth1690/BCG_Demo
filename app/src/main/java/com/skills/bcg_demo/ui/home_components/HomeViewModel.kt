@@ -1,3 +1,20 @@
+/*
+*********************************************************
+* ******************************************************
+ * Copyright 2020 MobileProgrammingLLC
+ *  All Rights Reserved*
+ *
+ * No portion of this material may be reproduced in any form without the written permission of MobileProgrammingLLC.
+ * All information contained in this document is MobileProgrammingLLC*'s  private property and trade secret.
+ *
+ * $Id-
+ * Filename:HomeViewModel.kt
+ * Author:
+ * Creation Date: 20/10/2020 09:30 AM
+ *
+ * ****************************************************
+ * ******************************************************
+ */
 package com.skills.bcg_demo.ui.home_components
 
 import androidx.lifecycle.LiveData
@@ -14,18 +31,17 @@ import retrofit2.Response
 
 class HomeViewModel : BaseViewModel() {
 
-    private val apiService: RequestInterface? = RetrofitClient.getClient()
-    private val repository: ApiDataSource? = apiService?.let { ApiDataSource(it) }
-    var userStepUpdateResponse: MutableLiveData<ApiModels.UserUpdatedStepsResponse> = MutableLiveData()
-    private var getUserSteps: MutableLiveData<ApiModels.LoginModel>? = null
-    private var onApiResponseFail = MutableLiveData<Response<*>>()
+    private val mApiService: RequestInterface? = RetrofitClient.getClient()
+    private val mRepository: ApiDataSource? = mApiService?.let { ApiDataSource(it) }
+    var mUserStepUpdateResponse: MutableLiveData<ApiModels.UserUpdatedStepsResponse> = MutableLiveData()
+    private var mOnApiResponseFail = MutableLiveData<Response<*>>()
 
     fun getUserStepUpdateResponse(): LiveData<ApiModels.UserUpdatedStepsResponse?>? {
-        return userStepUpdateResponse
+        return mUserStepUpdateResponse
     }
 
     fun onApiFail(): LiveData<Response<*>?>? {
-        return onApiResponseFail
+        return mOnApiResponseFail
     }
 
 
@@ -38,9 +54,9 @@ class HomeViewModel : BaseViewModel() {
      * request user login after validating user input
      */
     fun updateStepCount(stepCount:Long) {
-        scope.launch {
+        mScope.launch {
             getResponseModel(
-                repository?.updateUserStep(
+                mRepository?.updateUserStep(
                     ApiModels.UpdateStepCountRequest(
                         stepCount
                     )
@@ -76,7 +92,7 @@ class HomeViewModel : BaseViewModel() {
     }
 
     private fun postUserStepUpdateResponseData(type: ApiModels.UserUpdatedStepsResponse) {
-        userStepUpdateResponse.postValue(type)
+        mUserStepUpdateResponse.postValue(type)
     }
 
 }

@@ -1,3 +1,20 @@
+/*
+*********************************************************
+* ******************************************************
+ * Copyright 2020 MobileProgrammingLLC
+ *  All Rights Reserved*
+ *
+ * No portion of this material may be reproduced in any form without the written permission of MobileProgrammingLLC.
+ * All information contained in this document is MobileProgrammingLLC*'s  private property and trade secret.
+ *
+ * $Id-
+ * Filename:BaseViewModel.kt
+ * Author:
+ * Creation Date: 20/10/2020 09:30 AM
+ *
+ * ****************************************************
+ * ******************************************************
+ */
 package com.skills.bcg_demo.base_componets
 
 import androidx.lifecycle.ViewModel
@@ -10,21 +27,21 @@ import kotlin.coroutines.CoroutineContext
 
 open class BaseViewModel : ViewModel() {
 
-    private var subscription: CompositeDisposable? = null
-    private val parentJob = Job()
-    private val coroutineContext: CoroutineContext
-        get() = parentJob + Dispatchers.Default
-    val scope = CoroutineScope(coroutineContext)
+    private var mSubscription: CompositeDisposable? = null
+    private val mParentJob = Job()
+    private val mCoroutineContext: CoroutineContext
+        get() = mParentJob + Dispatchers.Default
+    val mScope = CoroutineScope(mCoroutineContext)
 
     init {
-        subscription = CompositeDisposable()
+        mSubscription = CompositeDisposable()
     }
 
 
     override fun onCleared() {
         super.onCleared()
-        subscription?.dispose()
-        coroutineContext.cancel()
+        mSubscription?.dispose()
+        mCoroutineContext.cancel()
     }
 
 }

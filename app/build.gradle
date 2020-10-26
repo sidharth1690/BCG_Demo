@@ -72,7 +72,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:$google_auth"
 
     //testing frameworks
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit_version"
 
     testImplementation "androidx.test:runner:$test_rule"
     testImplementation "androidx.test:rules:$test_rule"
