@@ -15,9 +15,9 @@
  * ****************************************************
  * ******************************************************
  */
-package com.skills.bcg_demo.data.network
+package com.example.network_module.network_layer
 
-import com.skills.bcg_demo.models.ApiModels
+import com.example.network_module.network_layer.reponse_model.ApiModels
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

@@ -19,20 +19,17 @@ package com.skills.bcg_demo.ui.home_components
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.network_module.network_layer.Result
+import com.example.network_module.network_layer.reponse_model.ApiModels
 import com.skills.bcg_demo.base_componets.BaseViewModel
 import com.skills.bcg_demo.data.network.ApiDataSource
-import com.skills.bcg_demo.data.network.RequestInterface
-import com.skills.bcg_demo.data.network.RetrofitClient
-import com.skills.bcg_demo.models.ApiModels
 import com.skills.bcg_demo.utils.Constants
-import com.skills.bcg_demo.utils.Result
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class HomeViewModel : BaseViewModel() {
 
-    private val mApiService: RequestInterface? = RetrofitClient.getClient()
-    private val mRepository: ApiDataSource? = mApiService?.let { ApiDataSource(it) }
+    private val mRepository: ApiDataSource? = ApiDataSource()
     var mUserStepUpdateResponse: MutableLiveData<ApiModels.UserUpdatedStepsResponse> = MutableLiveData()
     private var mOnApiResponseFail = MutableLiveData<Response<*>>()
 

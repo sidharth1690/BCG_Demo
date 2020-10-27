@@ -1,4 +1,4 @@
-package com.skills.bcg_demo.models
+package com.example.network_module.network_layer.reponse_model
 
 class ApiModels {
 

@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.skills.bcg_demo.R
 import com.skills.bcg_demo.databinding.ActivityLoginBinding
 import com.skills.bcg_demo.ui.home_components.MainActivity
+import com.skills.bcg_demo.utils.AppUtils
 import com.skills.bcg_demo.utils.AppUtils.isEmailValid
 import com.skills.bcg_demo.utils.PreferenceHelper
 
@@ -88,15 +89,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             this
                         )
                     }
-                    redirectToMainActivity()
-//                if(AppUtils.isNetworkConnected(this)) {
-//                loginViewModel.requestUserLogin(
-//                    it?.email.toString().trim(),
-//                    it?.password.toString().trim()
-//                )
-//                }else{
-//                    AppUtils.showToast(this,getString(R.string.err_internet_check))
-//                }
+//                    redirectToMainActivity()
+                if(AppUtils.isNetworkConnected(this)) {
+                    mLoginViewModel.requestUserLogin(mActivityLoginBinding.etEmail.toString().trim(), mActivityLoginBinding.etPassword.toString().trim()
+                )
+                }else{
+                    AppUtils.showToast(this,getString(R.string.err_internet_check))
+                }
                 }
             }
 

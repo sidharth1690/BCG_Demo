@@ -18,20 +18,17 @@
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.network_module.network_layer.Result
+import com.example.network_module.network_layer.reponse_model.ApiModels
 import com.skills.bcg_demo.base_componets.BaseViewModel
-import com.example.network_client_module.network.ApiDataSource
-import com.example.network_client_module.network.RequestInterface
-import com.example.network_client_module.network.RetrofitClient
-import com.skills.bcg_demo.models.ApiModels
+import com.skills.bcg_demo.data.network.ApiDataSource
 import com.skills.bcg_demo.utils.Constants
-import com.skills.bcg_demo.utils.Result
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class LoginViewModel : BaseViewModel() {
 
-    private val mApiService: RequestInterface? = RetrofitClient.getClient()
-    private val mRepository: ApiDataSource? = mApiService?.let { ApiDataSource(it) }
+    private val mRepository: ApiDataSource? = ApiDataSource()
     var mUserLoginResult: MutableLiveData<ApiModels.UserLoginResponse> = MutableLiveData()
     private var mGetUser: MutableLiveData<ApiModels.LoginModel>? = null
     private var mOnApiResponseFail = MutableLiveData<Response<*>>()
@@ -94,7 +91,6 @@ class LoginViewModel : BaseViewModel() {
                 is Result.Error -> onResponseError("")
             }
         }
-
     }
 
     private fun onResponseError(error: String?) {
@@ -105,15 +101,4 @@ class LoginViewModel : BaseViewModel() {
         mUserLoginResult.postValue(type)
     }
 
-//    /**
-//     *click handler for views
-//     */
-//     fun onClick(view: View) {
-//        when (view.id) {
-//            R.id.tv_login -> {
-//                val loginModel=ApiModels.LoginModel(userName.value+"",password.value+"")
-//                getUser?.setValue(loginModel)
-//            }
-//        }
-//    }
 }

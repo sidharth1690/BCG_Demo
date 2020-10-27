@@ -15,7 +15,7 @@
  * ****************************************************
  * ******************************************************
  */
-package com.skills.bcg_demo.utils
+package com.example.network_module.network_layer
 
 sealed class Result<out T : Any> {
     data class Success<out T : Any>(val data: T) : Result<T>()

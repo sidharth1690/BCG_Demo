@@ -15,7 +15,7 @@
  * ****************************************************
  * ******************************************************
  */
-package com.skills.bcg_demo.utils
+package com.example.network_module.network_layer
 
 suspend fun <T : Any> safeApiCall(call: suspend () -> Result<T>): Result<T> = try {
     call.invoke()
