@@ -29,6 +29,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.example.network_module.network_layer.reponse_model.ApiModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -44,7 +45,6 @@ import com.google.android.gms.tasks.Task
 import com.skills.bcg_demo.R
 import com.skills.bcg_demo.components.ViewModelFactory
 import com.skills.bcg_demo.databinding.ActivityMainBinding
-import com.skills.bcg_demo.models.ApiModels
 import com.skills.bcg_demo.utils.AppUtils
 import com.skills.bcg_demo.utils.Constants
 import com.skills.bcg_demo.utils.Constants.Companion.days
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mHomeViewModel: HomeViewModel
     private lateinit var mActivityMainBinding: ActivityMainBinding
     private var mStepsList: ArrayList<Long> = ArrayList()
-    private var mGoogleFitObj = ApiModels.GoogleFitResponse()
+    private var mGoogleFitObj = ApiModel.GoogleFitResponse()
     private fun getGoogleAccount() = GoogleSignIn.getAccountForExtension(this, Constants.googleFitOptions)
     private var mSeekBarValue: Int = 0
 

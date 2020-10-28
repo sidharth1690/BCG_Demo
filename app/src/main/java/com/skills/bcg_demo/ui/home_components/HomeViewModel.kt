@@ -20,6 +20,7 @@ package com.skills.bcg_demo.ui.home_components
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.network_module.network_layer.Result
+import com.example.network_module.network_layer.reponse_model.ApiModel
 import com.example.network_module.network_layer.reponse_model.ApiModels
 import com.skills.bcg_demo.base_componets.BaseViewModel
 import com.skills.bcg_demo.data.network.ApiDataSource
@@ -30,17 +31,16 @@ import retrofit2.Response
 class HomeViewModel : BaseViewModel() {
 
     private val mRepository: ApiDataSource? = ApiDataSource()
-    var mUserStepUpdateResponse: MutableLiveData<ApiModels.UserUpdatedStepsResponse> = MutableLiveData()
+    var mUserStepUpdateResponse: MutableLiveData<ApiModel.UserUpdatedStepsResponse> = MutableLiveData()
     private var mOnApiResponseFail = MutableLiveData<Response<*>>()
 
-    fun getUserStepUpdateResponse(): LiveData<ApiModels.UserUpdatedStepsResponse?>? {
+    fun getUserStepUpdateResponse(): LiveData<ApiModel.UserUpdatedStepsResponse?>? {
         return mUserStepUpdateResponse
     }
 
     fun onApiFail(): LiveData<Response<*>?>? {
         return mOnApiResponseFail
     }
-
 
 
 
@@ -68,7 +68,7 @@ class HomeViewModel : BaseViewModel() {
     private suspend fun <T> getResponseModel(dataObj: T) {
         when (dataObj) {
             is Result.Success<*> -> when (val isType = dataObj.data) {
-                is ApiModels.UserUpdatedStepsResponse -> when (isType.successful) {
+                is ApiModel.UserUpdatedStepsResponse -> when (isType.successful) {
                     Constants.API_RESPONSE_SUCCESS -> {
                         postUserStepUpdateResponseData(isType)
                     }
@@ -88,7 +88,7 @@ class HomeViewModel : BaseViewModel() {
         errorMessage.postValue(error)
     }
 
-    private fun postUserStepUpdateResponseData(type: ApiModels.UserUpdatedStepsResponse) {
+    private fun postUserStepUpdateResponseData(type: ApiModel.UserUpdatedStepsResponse) {
         mUserStepUpdateResponse.postValue(type)
     }
 

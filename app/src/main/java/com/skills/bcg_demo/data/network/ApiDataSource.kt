@@ -20,6 +20,7 @@ package com.skills.bcg_demo.data.network
 import android.util.Log
 import com.example.network_module.network_layer.NetworkClient
 import com.example.network_module.network_layer.Result
+import com.example.network_module.network_layer.reponse_model.ApiModel
 import com.example.network_module.network_layer.reponse_model.ApiModels
 import com.example.network_module.network_layer.safeApiCall
 import com.google.gson.GsonBuilder

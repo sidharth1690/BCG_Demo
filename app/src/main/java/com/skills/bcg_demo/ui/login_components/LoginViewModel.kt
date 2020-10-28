@@ -19,6 +19,7 @@
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.network_module.network_layer.Result
+import com.example.network_module.network_layer.reponse_model.ApiModel
 import com.example.network_module.network_layer.reponse_model.ApiModels
 import com.skills.bcg_demo.base_componets.BaseViewModel
 import com.skills.bcg_demo.data.network.ApiDataSource
