@@ -89,13 +89,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             this
                         )
                     }
-//                    redirectToMainActivity()
-                if(AppUtils.isNetworkConnected(this)) {
-                    mLoginViewModel.requestUserLogin(mActivityLoginBinding.etEmail.toString().trim(), mActivityLoginBinding.etPassword.toString().trim()
-                )
-                }else{
-                    AppUtils.showToast(this,getString(R.string.err_internet_check))
-                }
+                    redirectToMainActivity()
+//                if(AppUtils.isNetworkConnected(this)) {
+//                    mLoginViewModel.requestUserLogin(mActivityLoginBinding.etEmail.text.toString().trim(), mActivityLoginBinding.etPassword.text.toString().trim()
+//                )
+//                }else{
+//                    AppUtils.showToast(this,getString(R.string.err_internet_check))
+//                }
                 }
             }
 
